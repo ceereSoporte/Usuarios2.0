@@ -1,0 +1,374 @@
+﻿
+/****** Object:  Table [dbo].[PHP_Configuracion]    Script Date: 29/03/2019 9:59:32 a.m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[PHP_Configuracion](
+	[IDConfiguracionPHP] [int] IDENTITY(1,1) NOT NULL,
+	[DocumentoUsuario] [varchar](50) NULL,
+	[CodigoVerificacion] [nvarchar](5) NULL,
+	[FechaModifcacion] [date] NULL,
+	[TextTerminosyCondiciones] [nvarchar](max) NULL
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[PHP_DireccionesEntidad]    Script Date: 29/03/2019 9:59:33 a.m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[PHP_DireccionesEntidad](
+	[IdDireccionesEntidad] [int] IDENTITY(1,1) NOT NULL,
+	[Documento Entidad] [nvarchar](50) NOT NULL,
+	[Nomenclatura1] [int] NULL,
+	[NumeroDir1] [nchar](10) NULL,
+	[LetraDir1] [int] NULL,
+	[Complemento1] [int] NULL,
+	[NumeroDir2] [nchar](10) NULL,
+	[LetraDir2] [int] NULL,
+	[Complemento2] [int] NULL,
+	[NumeroDir3] [nchar](10) NULL,
+	[Complemento3] [nvarchar](50) NULL,
+	[Id Ciudad] [int] NULL,
+	[Id Departamento] [int] NULL,
+	[Id Barrio] [int] NULL,
+	[Id País] [int] NULL,
+	[OtroBarrio] [varchar](50) NULL,
+	[Direccion] [varchar](50) NULL,
+ CONSTRAINT [PK_PHP_DireccionesEntidad] PRIMARY KEY CLUSTERED 
+(
+	[IdDireccionesEntidad] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[PHP_Entidad_Info_Extra]    Script Date: 29/03/2019 9:59:33 a.m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[PHP_Entidad_Info_Extra](
+	[IdEntidadInfoExtra] [int] IDENTITY(1,1) NOT NULL,
+	[Documento Entidad] [nvarchar](50) NULL,
+	[Alergias] [nvarchar](max) NULL,
+	[Observaciones] [nvarchar](max) NULL,
+	[TerminosYcondiciones] [bit] NULL,
+ CONSTRAINT [PK_PHP_Entidad_Info_Extra] PRIMARY KEY CLUSTERED 
+(
+	[IdEntidadInfoExtra] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+
+/****** Object:  View [dbo].[PHP_ConsultaEntidad]    Script Date: 27/03/2019 2:12:34 p.m. ******/
+DROP VIEW [dbo].[PHP_ConsultaEntidad]
+GO
+
+/****** Object:  View [dbo].[PHP_ConsultaEntidad]    Script Date: 29/03/2019 10:00:49 a.m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE VIEW [dbo].[PHP_ConsultaEntidad]
+AS
+SELECT        dbo.Entidad.[Documento Entidad] AS DocEntidad, dbo.Entidad.[Id Tipo de Documento] AS TipoDocumento, dbo.Entidad.[Primer Apellido Entidad] AS PrimerApellido, dbo.Entidad.[Segundo Apellido Entidad] AS SegundoApellido, 
+                         dbo.Entidad.[Primer Nombre Entidad] AS PrimerNombre, dbo.Entidad.[Segundo Nombre Entidad] AS SegundoNombre, dbo.Entidad.[Nombre Completo Entidad] AS NombrecompletoEntidad, 
+                         dbo.EntidadII.[Teléfono No 1 EntidadII] AS Telefono1, dbo.EntidadII.[Teléfono Celular EntidadII] AS Celular, dbo.EntidadII.[E-mail Nro 1 EntidadII] AS EmailEntidad, dbo.EntidadII.[Id Ciudad] AS IdCiudad, 
+                         dbo.PHP_DireccionesEntidad.Nomenclatura1, dbo.PHP_DireccionesEntidad.NumeroDir1, dbo.PHP_DireccionesEntidad.LetraDir1, dbo.PHP_DireccionesEntidad.NumeroDir2, dbo.PHP_DireccionesEntidad.LetraDir2, 
+                         dbo.PHP_DireccionesEntidad.NumeroDir3, dbo.PHP_DireccionesEntidad.[Id Departamento] AS IdDepartamento, dbo.PHP_DireccionesEntidad.[Id Barrio] AS IdBarrio, dbo.PHP_DireccionesEntidad.Direccion, 
+                         dbo.EntidadIII.[Id Sexo] AS IdSexo, dbo.EntidadIII.[Id Estado Civil] AS IdEstadoCivil, dbo.EntidadIII.[Fecha Nacimiento EntidadIII] AS FechaNacimiento, dbo.EntidadXVI.[Documento Entidad Salud] AS docEps, 
+                         dbo.EntidadXVI.[Id Tipo de Afiliado] AS TIpoEps, dbo.EntidadXXIV.[Documento Entidad Prepago] AS DocPrepagada, dbo.EntidadXXIV.[Id Tipo de Afiliado] AS TipoPrepagada, dbo.EntidadVI.[Nombre EntidadVI] AS NombreEmpresa, 
+                         dbo.EntidadVI.[Id Ocupación] AS IdOcupacion, dbo.EntidadXIII.[Nombres EntidadXIII] AS NombreMedio, dbo.EntidadXIII.[Id Medio Publicitario] AS IdMedioPublicitario, dbo.PHP_Entidad_Info_Extra.Observaciones, 
+                         dbo.PHP_Entidad_Info_Extra.Alergias, dbo.PHP_DireccionesEntidad.[Id País] AS IdPais, dbo.EntidadXV.[Nombre EntidadXV] AS NombreInstitucion, dbo.EntidadXV.[Id Estudio] AS IdEstudios, 
+                         dbo.PHP_DireccionesEntidad.Complemento1, dbo.PHP_DireccionesEntidad.Complemento2, dbo.PHP_DireccionesEntidad.Complemento3
+FROM            dbo.Entidad INNER JOIN
+                         dbo.EntidadII ON dbo.Entidad.[Documento Entidad] = dbo.EntidadII.[Documento Entidad] INNER JOIN
+                         dbo.EntidadIII ON dbo.Entidad.[Documento Entidad] = dbo.EntidadIII.[Documento Entidad] INNER JOIN
+                         dbo.EntidadXV ON dbo.Entidad.[Documento Entidad] = dbo.EntidadXV.[Documento Entidad] LEFT OUTER JOIN
+                         dbo.PHP_Entidad_Info_Extra ON dbo.Entidad.[Documento Entidad] = dbo.PHP_Entidad_Info_Extra.[Documento Entidad] LEFT OUTER JOIN
+                         dbo.EntidadVI ON dbo.Entidad.[Documento Entidad] = dbo.EntidadVI.[Documento Entidad] LEFT OUTER JOIN
+                         dbo.EntidadXXIV ON dbo.Entidad.[Documento Entidad] = dbo.EntidadXXIV.[Documento Entidad] LEFT OUTER JOIN
+                         dbo.EntidadXIII ON dbo.Entidad.[Documento Entidad] = dbo.EntidadXIII.[Documento Entidad] LEFT OUTER JOIN
+                         dbo.EntidadXVI ON dbo.Entidad.[Documento Entidad] = dbo.EntidadXVI.[Documento Entidad] LEFT OUTER JOIN
+                         dbo.PHP_DireccionesEntidad ON dbo.Entidad.[Documento Entidad] = dbo.PHP_DireccionesEntidad.[Documento Entidad]
+
+GO
+
+INSERT INTO [dbo].[Sexo]([Sexo],[Descripción Sexo],[Orden Sexo],[Id Estado]) VALUES ('O','Otro',1,1)
+
+INSERT INTO [dbo].[Sexo]([Sexo],[Descripción Sexo],[Orden Sexo],[Id Estado]) VALUES ('NR','No deseo rebelarlo',1,1)
+GO
+
+/****** Object:  Table [dbo].[EntidadXXVIII]    Script Date: 21/03/2019 11:35:07 a.m. ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[EntidadXXVIII](
+	[Id EntidadXXVIII] [int] IDENTITY(1,1) NOT NULL,
+	[Documento Entidad] [nvarchar](50) NOT NULL,
+	[Descripcion Documento Alterno] [nvarchar](50) NULL,
+	[Documento Entidad Alterno] [nvarchar](50) NULL CONSTRAINT [DF_Table_2_Valor Salario EntidadXXVII]  DEFAULT ((0)),
+	[Id Tipo de Documento Alterno] [int] NULL,
+	[Por defecto] [int] NULL CONSTRAINT [DF_EntidadXXVIII_Por defecto]  DEFAULT ((0)),
+	[Fecha de ingreso] [datetime] NULL,
+	[Id Estado] [int] NULL CONSTRAINT [DF_EntidadXXVIII_Id Estado]  DEFAULT ((6)),
+ CONSTRAINT [PK_EntidadXXVIII] PRIMARY KEY CLUSTERED 
+(
+	[Id EntidadXXVIII] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+
+
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' AF ' ,'AFGANISTAN ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' AL ' ,'ALBANIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' DE ' ,'ALEMANIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' AD ' ,'ANDORRA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' AO ' ,'ANGOLA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' AI ' ,'ANGUILLA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' AG ' ,'ANTIGUA Y BARBUDA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' AN ' ,'ANTILLAS HOLANDESAS ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' SA ' ,'ARABIA SAUDITA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' DZ ' ,'ARGELIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' AR ' ,'ARGENTINA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' AM ' ,'ARMENIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' AW ' ,'ARUBA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' AU ' ,'AUSTRALIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' AT ' ,'AUSTRIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' AZ ' ,'AZERBAIJAN ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' BS ' ,'BAHAMAS ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' BH ' ,'BAHREIN ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' BD ' ,'BANGLADESH ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' BB ' ,'BARBADOS ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' BE ' ,'BELGICA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' BZ ' ,'BELICE ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' BY ' ,'BELORUS ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' BJ ' ,'BENIN ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' BM ' ,'BERMUDAS ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' MM ' ,'BIRMANIA (MYANMAR) ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' BO ' ,'BOLIVIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' BA ' ,'BOSNIA-HERZEGOVINA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' BW ' ,'BOTSWANA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' BR ' ,'BRASIL ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' BN ' ,'BRUNEI DARUSSALAM ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' BG ' ,'BULGARIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' BF ' ,'BURKINA FASSO ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' BI ' ,'BURUNDI ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' BT ' ,'BUTAN ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' CV ' ,'CABO VERDE ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' KY ' ,'CAIMAN, ISLAS ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' CM ' ,'CAMERUN, REPUBLICA U ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' CA ' ,'CANADA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' 27 ' ,'CANAL(NORMANDAS),ISL ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' 28 ' ,'CANTON ENDERBURY,ISL ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' TD ' ,'CHAD ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' CL ' ,'CHILE ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' CN ' ,'CHINA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' CY ' ,'CHIPRE ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' VA ' ,'CIUDAD DEL VATICANO ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' CC ' ,'COCOS (KEELING), ISL ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' CO ' ,'COLOMBIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' KM ' ,'COMORAS ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' EU ' ,'COMUNIDAD EUROPEA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' CG ' ,'CONGO ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' CK ' ,'COOK, ISLAS ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' KP ' ,'COREA DEL NORTE,REPU ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' KR ' ,'COREA DEL SUR, REPUB ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' CI ' ,'COSTA DE MARFIL ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' CR ' ,'COSTA RICA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' HR ' ,'CROACIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' CU ' ,'CUBA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' CW ' ,'CURACAO ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' DK ' ,'DINAMARCA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' DJ ' ,'DJIBOUTI ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' DM ' ,'DOMINICA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' EC ' ,'ECUADOR ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' EG ' ,'EGIPTO ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' SV ' ,'EL SALVADOR ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' AE ' ,'EMIRATOS ARABES UNID ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' ER ' ,'ERITREA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' SK ' ,'ESLOVAQUIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' SI ' ,'ESLOVENIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' ES ' ,'ESPAÑA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' US ' ,'ESTADOS UNIDOS ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' EE ' ,'ESTONIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' ET ' ,'ETIOPIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' FO ' ,'FEROE, ISLAS ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' FJ ' ,'FIJI ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' PH ' ,'FILIPINAS ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' FI ' ,'FINLANDIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' FR ' ,'FRANCIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' GA ' ,'GABON ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' GM ' ,'GAMBIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' 21 ' ,'GAZA Y JERICO ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' GE ' ,'GEORGIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' GH ' ,'GHANA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' GI ' ,'GIBRALTAR ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' GD ' ,'GRANADA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' GR ' ,'GRECIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' GL ' ,'GROENLANDIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' GP ' ,'GUADALUPE ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' GU ' ,'GUAM ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' GT ' ,'GUATEMALA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' GF ' ,'GUAYANA FRANCESA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' GN ' ,'GUINEA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' GW ' ,'GUINEA - BISSAU ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' GQ ' ,'GUINEA ECUATORIAL ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' GY ' ,'GUYANA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' HT ' ,'HAITI ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' HN ' ,'HONDURAS ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' HK ' ,'HONG KONG ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' HU ' ,'HUNGRIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' IN ' ,'INDIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' ID ' ,'INDONESIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' IQ ' ,'IRAK ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' IR ' ,'IRAN, REPUBLICA ISLA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' IE ' ,'IRLANDA (EIRE) ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' IM ' ,'ISLA DE MAN ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' IS ' ,'ISLANDIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' UM ' ,'ISLAS MENORES DE ESTADOS UNIDOS ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' IL ' ,'ISRAEL ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' IT ' ,'ITALIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' JM ' ,'JAMAICA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' JP ' ,'JAPON ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' 22 ' ,'JOHNSTON,ISLA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' JO ' ,'JORDANIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' KH ' ,'KAMPUCHEA (CAMBOYA) ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' KZ ' ,'KAZAJSTAN ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' KE ' ,'KENYA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' KG ' ,'KIRGUIZISTAN ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' KI ' ,'KIRIBATI ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' KW ' ,'KUWAIT ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' LA ' ,'LAOS,REPUBLICA POPUL ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' LS ' ,'LESOTHO ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' LV ' ,'LETONIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' LB ' ,'LIBANO ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' LR ' ,'LIBERIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' LY ' ,'LIBIA(INCLUYE FEZZAN ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' LI ' ,'LIECHTENSTEIN ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' LT ' ,'LITUANIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' LU ' ,'LUXEMBURGO ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' MO ' ,'MACAO ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' MK ' ,'MACEDONIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' MG ' ,'MADAGASCAR ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' MY ' ,'MALASIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' MW ' ,'MALAWI ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' MV ' ,'MALDIVAS ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' ML ' ,'MALI ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' MT ' ,'MALTA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' MP ' ,'MARIANAS DEL NORTE,I ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' MA ' ,'MARRUECOS ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' MH ' ,'MARSHALL, ISLAS ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' MQ ' ,'MARTINICA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' MU ' ,'MAURICIO ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' MR ' ,'MAURITANIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' MX ' ,'MEXICO ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' FM ' ,'MICRONESIA,ESTADOS F ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' 24 ' ,'MIDWAY, ISLAS ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' MD ' ,'MOLDAVIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' MC ' ,'MONACO ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' MN ' ,'MONGOLIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' MS ' ,'MONSERRAT, ISLA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' ME ' ,'MONTENEGRO ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' MZ ' ,'MOZAMBIQUE ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' NA ' ,'NAMIBIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' NR ' ,'NAURU ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' CX ' ,'NAVIDAD (CHRISTMAS) ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' NP ' ,'NEPAL ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' NI ' ,'NICARAGUA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' NE ' ,'NIGER ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' NG ' ,'NIGERIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' UN ' ,'NIUE, ISLA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' NU ' ,'NIVE ISLA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' 99 ' ,'NO DECLARADOS ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' NF ' ,'NORFOLK, ISLA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' NO ' ,'NORUEGA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' NC ' ,'NUEVA CALEDONIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' NZ ' ,'NUEVA ZELANDIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' OM ' ,'OMAN ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' NL ' ,'PAISES BAJOS(HOLANDA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' PK ' ,'PAKISTAN ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' PW ' ,'PALAU, ISLAS ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' PS ' ,'PALESTINA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' PA ' ,'PANAMA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' PG ' ,'PAPUASIA NUEV GUINEA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' PY ' ,'PARAGUAY ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' PE ' ,'PERU ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' PN ' ,'PITCAIRN, ISLA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' PF ' ,'POLINESIA FRANCESA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' PL ' ,'POLONIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' PT ' ,'PORTUGAL ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' PR ' ,'PUERTO RICO ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' QA ' ,'QATAR ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' GB ' ,'REINO UNIDO ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' CF ' ,'REPUBLICA CENTROAFRI ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' CZ ' ,'REPUBLICA CHECA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' CD ' ,'REPUBLICA DEMOCRATICA DEL CONGO ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' DO ' ,'REPUBLICA DOMINICANA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' RE ' ,'REUNION ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' RO ' ,'RUMANIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' RU ' ,'RUSIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' RW ' ,'RWANDA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' EH ' ,'SAHARA OCCIDENTAL ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' SB ' ,'SALOMSN, ISLAS ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' WS ' ,'SAMOA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' AS ' ,'SAMOA NORTEAMERICANA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' KN ' ,'SAN CRISTOBAL Y NIEVES ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' SM ' ,'SAN MARINO ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' PM ' ,'SAN PEDRO Y MIGUELON ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' VC ' ,'SAN VICENTE Y LAS GR ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' SH ' ,'SANTA ELENA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' LC ' ,'SANTA LUCIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' ST ' ,'SANTO TOME Y PRINCIP ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' SN ' ,'SENEGAL ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' RS ' ,'SERBIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' SC ' ,'SEYCHELLES ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' SL ' ,'SIERRA LEONA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' SG ' ,'SINGAPUR ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' SY ' ,'SIRIA,REPUBLICA ARAB ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' SO ' ,'SOMALIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' LK ' ,'SRI LANKA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' ZA ' ,'SUDAFRICA,REPUBLICA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' SD ' ,'SUDAN ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' SE ' ,'SUECIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' CH ' ,'SUIZA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' SR ' ,'SURINAM ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' SZ ' ,'SWAZILANDIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' TJ ' ,'TADJIKISTAN ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' TH ' ,'TAILANDIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' TW ' ,'TAIWAN (FORMOSA) ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' TZ ' ,'TANZANIA,REPUBLICA U ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' 26 ' ,'TERRI ANTARTICO BRIT ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' IO ' ,'TERRITORI BRITANICO ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' TL ' ,'TIMOR DEL ESTE ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' TG ' ,'TOGO ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' TK ' ,'TOKELAU ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' TO ' ,'TONGA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' TT ' ,'TRINIDAD Y TOBAGO ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' TN ' ,'TUNICIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' TC ' ,'TURCAS Y CAICOS,ISLA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' TM ' ,'TURKMENISTAN ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' TR ' ,'TURQUIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' TV ' ,'TUVALU ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' UA ' ,'UCRANIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' UG ' ,'UGANDA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' UY ' ,'URUGUAY ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' UZ ' ,'UZBEKISTAN ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' VU ' ,'VANUATU ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' VE ' ,'VENEZUELA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' VN ' ,'VIETNAM ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' VG ' ,'VIRGENES,ISLAS(BRITA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' VI ' ,'VIRGENES,ISLAS(NORTE ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' WF ' ,'WALLIS Y FORTUNA,ISL ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' YE ' ,'YEMEN ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' YU ' ,'YUGOSLAVIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' ZM ' ,'ZAMBIA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' ZW ' ,'ZIMBABWE ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' 30 ' ,'ZONA CANAL DE PANAMA ',1,7)
+insert into País ([Código País],[Descripción País],[Orden País],[Id Estado]) values( ' 31 ' ,'ZONA NEUTRAL(PALESTA ',1,7)
